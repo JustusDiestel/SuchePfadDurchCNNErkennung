@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
+import numpy as np
 
 class HeuristikNN(nn.Module):
     def __init__(self):
@@ -15,11 +16,29 @@ class HeuristikNN(nn.Module):
         self.fc1 = nn.Linear(32*20*20, 64)
         self.fc2 = nn.Linear(64,1)
 
-        def forward(self, x):
-            x = F.relu(self.conv1(x))
-            x = F.relu(self.conv2(x))
-            x = F.view(x.size(0), -1)
-            x = F.relu(self.fc1(x))
-            return self.fc2(x)
+    def forward(self, x):
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = x.view(x.size(0), -1)
+        x = F.relu(self.fc1(x))
+        return self.fc2(x)
 
 
+from torch.utils.data import Dataset
+import numpy as np
+import pandas as pd
+import torch
+
+class MazeDataset(Dataset):
+    def __init__(self, csv_file):
+        self.data = pd.read_csv(csv_file)
+
+    def __getitem__(self, idx):
+        row = self.data.iloc[idx]
+        grid = np.load(row["maze"].replace(".png", ".npy"))
+        grid = torch.tensor(grid).unsqueeze(0).float()  # [1,20,20]
+        label = torch.tensor(row["path_length"], dtype=torch.float32)
+        return grid, label
+
+    def __len__(self):
+        return len(self.data)

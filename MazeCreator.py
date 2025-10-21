@@ -50,6 +50,6 @@ def returnWeißeBlöcke(img, feldSeitenlänge, breitenBlöcke, höhenBlöcke):
             if pixel != (0,0,0):
                 weißeBlöcke.append((x, y))
                 # zur Kontrolle einzeichnen:
-                draw.rectangle([x0, y0, x0 + feldSeitenlänge, y0 + feldSeitenlänge], outline="blue")
+                draw.rectangle([x0, y0, x0 + feldSeitenlänge, y0 + feldSeitenlänge])
     #img.show()
     return weißeBlöcke

@@ -4,17 +4,17 @@ from PIL import Image
 import csv
 
 from AStarAlgo import doAStarAlgo
-from AStarCNNAlgo import maze_to_grid
+from CNN.PreparationsForCNN import maze_to_grid
 import numpy as np
 
 
 def createDataset(bildBreite, feldSeitenlänge, mauerBlöcke, breitenBlöcke, höhenBlöcke, anzahl):
-    os.makedirs("MazesDatensatz", exist_ok=True)
+    os.makedirs("../Data/MazesDatensatz", exist_ok=True)
     daten = []
     for x in range(anzahl):
         img = MazeCreator.createRandomMaze(bildBreite, feldSeitenlänge, mauerBlöcke, breitenBlöcke, höhenBlöcke)
         img, start, end, weißeBlöcke = MazeCreator.createStartAndEnd(img, feldSeitenlänge, breitenBlöcke, höhenBlöcke)
-        dateiname = os.path.join("MazesDatensatz", f"{x}.png")
+        dateiname = os.path.join("../Data/MazesDatensatz", f"{x}.png")
         img.save(dateiname)
         daten.append((dateiname, start[0], start[1], end[0], end[1]))
 
@@ -51,4 +51,4 @@ if __name__ == "__main__":
     anzahl = 100
 
     daten = createDataset(bildBreite, feldSeitenlänge, mauerBlöcke, breitenBlöcke, höhenBlöcke, anzahl)
-    create_csv_from_mazes(daten, "dataset.csv", feldgröße=20)
+    create_csv_from_mazes(daten, "../Data/dataset.csv", feldgröße=20)

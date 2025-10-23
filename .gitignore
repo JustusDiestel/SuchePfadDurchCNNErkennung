@@ -34,3 +34,5 @@ env/
 *.pth
 *.h5
 *.ckpt
+#Daten
+#*.csv

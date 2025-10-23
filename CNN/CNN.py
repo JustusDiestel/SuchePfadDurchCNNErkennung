@@ -2,11 +2,12 @@
     2. CNN schätzt für uns die heuristik, also wie wichtig ein block für unseren weg ist - könnte man mit manhatten vergleichen
 '''
 
-import torch
 import torch.nn as nn
-import torch.optim as optim
 import torch.nn.functional as F
 import numpy as np
+from torch.utils.data import Dataset
+import pandas as pd
+import torch
 
 class HeuristikNN(nn.Module):
     def __init__(self):
@@ -24,10 +25,7 @@ class HeuristikNN(nn.Module):
         return self.fc2(x)
 
 
-from torch.utils.data import Dataset
-import numpy as np
-import pandas as pd
-import torch
+
 
 class MazeDataset(Dataset):
     def __init__(self, csv_file):

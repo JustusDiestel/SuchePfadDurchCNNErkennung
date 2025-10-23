@@ -2,7 +2,6 @@
 
 import torch
 from heapq import heappush, heappop
-from CNN import HeuristikNN
 import numpy as np
 
 

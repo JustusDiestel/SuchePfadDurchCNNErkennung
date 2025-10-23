@@ -4,9 +4,8 @@ import AStarAlgo
 
 import torch
 from CNN.CNN import HeuristikNN
-
 import AStarAlgoCNN
-from CreateMazesAndTrainCNN.CreateMazeDataset import maze_to_grid
+from torchvision import transforms
 
 bildBreite = 20*20
 feldSeitenlänge = 20
@@ -37,20 +36,21 @@ if __name__ == "__main__":
 
 
 
-    # Maze vorbereiten weil wir ja 20x20 Cluster haben
-    grid = maze_to_grid(img, feldSeitenlänge)
-    weißeBlöcke = [(x, y) for y in range(len(grid)) for x in range(len(grid)) if grid[y, x] != 0]
-
-
-
-
     # Modell laden
     model = HeuristikNN()
     model.load_state_dict(torch.load("CreateMazesAndTrainCNN/cnn_heuristik.pth"))
     model.eval()
 
+    # Bild als Tensor vorbereiten (Grayscale, Resize, ToTensor)
+    transform = transforms.Compose([
+        transforms.Grayscale(num_output_channels=1),
+        transforms.Resize((bildBreite, bildBreite)),
+        transforms.ToTensor()
+    ])
+    img_tensor = transform(img)
+
     # CNN Pfad berechnen
-    aPath_cnn = AStarAlgoCNN.doAStarAlgoCNN(start, end, weißeBlöcke, grid, model)
+    aPath_cnn = AStarAlgoCNN.doAStarAlgoCNN(start, end, model, img_tensor)
 
     # Pfad einzeichnen
     draw = ImageDraw.Draw(img)

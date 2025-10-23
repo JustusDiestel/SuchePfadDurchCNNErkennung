@@ -14,15 +14,13 @@ class HeuristikNN(nn.Module):
         super().__init__()
         self.conv1 = nn.Conv2d(1,16,3,padding=1)
         self.conv2 = nn.Conv2d(16,32,3,padding=1)
-        self.fc1 = nn.Linear(32*20*20, 64)
-        self.fc2 = nn.Linear(64,1)
+        self.conv3 = nn.Conv2d(32, 1, 1)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
-        x = x.view(x.size(0), -1)
-        x = F.relu(self.fc1(x))
-        return self.fc2(x)
+        x = self.conv3(x)
+        return x.mean(dim=[2,3]).squeeze(1)
 
 
 

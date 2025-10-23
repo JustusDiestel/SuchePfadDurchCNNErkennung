@@ -1,14 +1,12 @@
 import numpy as np
-from PIL import Image
-import csv
-
+'''Brauch ich eigentlich garnicht '''
 def maze_to_grid(img, feldgröße=20):
-    img = img.convert("RGB")
     width, height = img.size
     blöcke_x = width // feldgröße
     blöcke_y = height // feldgröße
 
     grid = np.zeros((blöcke_y, blöcke_x), dtype=np.float32)
+    print(grid)
 
     for y in range(blöcke_y):
         for x in range(blöcke_x):

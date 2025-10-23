@@ -19,7 +19,8 @@ def trainMyCNN():
         for x, y in loader:
             optimizer.zero_grad()
             output = model(x)
-            loss = criterion(output.squeeze(), y)
+            y = y.view_as(output)
+            loss = criterion(output, y)
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
